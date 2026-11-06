@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>DAI — Soluções digitais</title>
+
+  <style>
+    :root {
+      --azul: #102e4a;
+      --verde: #40816d;
+      --fundo: #f5f6f3;
+      --texto: #23343d;
+      --borda: #d8e0dc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--texto);
+      background: var(--fundo);
+      line-height: 1.5;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .topo {
+      max-width: 1100px;
+      margin: auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      color: var(--azul);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--texto);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 24px 60px;
+    }
+
+    .inicio {
+      padding: 80px 0 65px;
+      max-width: 720px;
+    }
+
+    .etiqueta {
+      color: var(--verde);
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      color: var(--azul);
+      font-size: clamp(36px, 7vw, 62px);
+      line-height: 1.08;
+      margin: 14px 0 20px;
+    }
+
+    h2 {
+      color: var(--azul);
+      font-size: 28px;
+      margin-top: 0;
+    }
+
+    .inicio p {
+      font-size: 18px;
+      max-width: 600px;
+    }
+
+    section {
+      margin-bottom: 60px;
+    }
+
+    .botao {
+      display: inline-block;
+      border: 0;
+      border-radius: 6px;
+      background: var(--azul);
+      color: white;
+      padding: 13px 20px;
+      font: inherit;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .botao:hover { background: #214867; }
+    .botao:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .cartoes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+    }
+
+    .cartao, .painel {
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      padding: 24px;
+    }
+
+    .cartao h3 { color: var(--azul); margin-top: 0; }
+
+    .painel { max-width: 680px; }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 16px 0 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #b9c8c1;
+      border-radius: 6px;
+      background: white;
+      font: inherit;
+    }
+
+    textarea { min-height: 120px; resize: vertical; }
+
+    .consentimento {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-weight: normal;
+      margin: 18px 0;
+    }
+
+    .consentimento input {
+      width: auto;
+      margin-top: 5px;
+    }
+
+    .aviso { font-size: 14px; color: #52665e; }
+
+    #estado-formulario {
+      min-height: 24px;
+      font-weight: bold;
+    }
+
+    footer {
+      background: var(--azul);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="topo">
+      <a class="logo" href="#inicio">DAI</a>
+
+      <nav aria-label="Navegação principal">
+        <a href="#servicos">Serviços</a>
+        <a href="#contacto">Contacto</a>
+        <a href="#download">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="inicio">
+      <span class="etiqueta">Projeto de apresentação</span>
+      <h1>Soluções digitais pensadas para si.</h1>
+      <p>
+        Conheça a proposta DAI: uma experiência simples para explorar
+        serviços e entrar em contacto.
+      </p>
+      <a class="botao" href="#servicos">Conhecer serviços</a>
+    </section>
+
+    <section id="servicos">
+      <h2>O que estamos a construir</h2>
+      <p>Funcionalidades propostas para demonstração do projeto.</p>
+
+      <div class="cartoes">
+        <article class="cartao">
+          <h3>Aplicação digital</h3>
+          <p>Uma experiência prática para consultar serviços.</p>
+        </article>
+
+        <article class="cartao">
+          <h3>Alertas</h3>
+          <p>Notificações e informações num só lugar.</p>
+        </article>
+
+        <article class="cartao">
+          <h3>Apoio ao cliente</h3>
+          <p>Um canal para esclarecer dúvidas sobre o projeto.</p>
+        </article>
+
+        <article class="cartao">
+          <h3>Soluções para empresas</h3>
+          <p>Ideias digitais para diferentes necessidades.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <h2>Fale connosco</h2>
+      <p>Envie uma mensagem sobre o projeto DAI.</p>
+
+      <div class="painel">
+        <form id="formulario">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" maxlength="100" required>
+
+          <label for="contacto-campo">E-mail ou telefone</label>
+          <input
+            id="contacto-campo"
+            name="contacto"
+            maxlength="150"
+            required
+          >
+
+          <label for="servico">Área de interesse</label>
+          <select id="servico" name="servico" required>
+            <option value="">Selecione uma opção</option>
+            <option>Aplicação digital</option>
+            <option>Alertas e notificações</option>
+            <option>Apoio ao cliente</option>
+            <option>Crédito pessoal</option>
+            <option>Crédito automóvel</option>
+            <option>Habitação</option>
+            <option>Soluções para empresas</option>
+            <option>Cartões</option>
+            <option>Outro</option>
+          </select>
+
+          <label for="mensagem">Mensagem</label>
+          <textarea
+            id="mensagem"
+            name="mensagem"
+            maxlength="2000"
+            placeholder="Conte-nos como podemos ajudar."
+          ></textarea>
+
+          <label class="consentimento">
+            <input type="checkbox" id="consentimento" required>
+            <span>Concordo em ser contactado sobre este pedido.</span>
+          </label>
+
+          <p class="aviso">
+            Não envie palavras-passe, PIN, códigos de confirmação
+            ou dados bancários.
+          </p>
+
+          <button class="botao" id="enviar" type="submit">
+            Enviar pedido
+          </button>
+
+          <p id="estado-formulario" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="download">
+      <h2>Aplicativo DAI</h2>
+
+      <div class="painel">
+        <p id="nome-download">A verificar disponibilidade…</p>
+        <p id="versao-download" class="aviso"></p>
+
+        <a
+          id="botao-download"
+          class="botao"
+          hidden
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Abrir página de download
+        </a>
+
+        <p class="aviso">
+          Antes de instalar qualquer aplicativo, confirme a origem
+          do ficheiro.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    DAI — Protótipo de apresentação. Não introduza dados sensíveis.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL =
+      "https://ovoqrcaktvksvgbgsixg.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_eAtoBK4izRPU-CbmYUOinA_vrIt5icH";
+
+    const cliente = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const formulario = document.getElementById("formulario");
+    const estado = document.getElementById("estado-formulario");
+    const botaoEnviar = document.getElementById("enviar");
+
+    formulario.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+
+      botaoEnviar.disabled = true;
+      estado.textContent = "A enviar…";
+
+      try {
+        const pedido = {
+          nome: document.getElementById("nome").value.trim(),
+          contacto: document.getElementById("contacto-campo").value.trim(),
+          servico: document.getElementById("servico").value,
+          mensagem: document.getElementById("mensagem").value.trim(),
+          consentimento: document.getElementById("consentimento").checked
+        };
+
+        if (!pedido.nome || !pedido.contacto || !pedido.servico) {
+          estado.textContent = "Preencha os campos obrigatórios.";
+          return;
+        }
+
+        const { error } = await cliente
+          .from("pedidos")
+          .insert(pedido);
+
+        if (error) throw error;
+
+        formulario.reset();
+        estado.textContent = "Pedido enviado com sucesso.";
+      } catch (erro) {
+        console.error("Erro ao enviar pedido:", erro);
+        estado.textContent =
+          "Não foi possível enviar. Tente novamente mais tarde.";
+      } finally {
+        botaoEnviar.disabled = false;
+      }
+    });
+
+    async function carregarDownload() {
+      const nome = document.getElementById("nome-download");
+      const versao = document.getElementById("versao-download");
+      const botao = document.getElementById("botao-download");
+
+      try {
+        const { data, error } = await cliente
+          .from("configuracao_download")
+          .select("nome, versao, link")
+          .eq("id", 1)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (!data || !data.link) {
+          nome.textContent = "Download indisponível neste momento.";
+          return;
+        }
+
+        const url = new URL(data.link);
+
+        if (url.protocol !== "https:") {
+          throw new Error("O link de download deve usar HTTPS.");
+        }
+
+        nome.textContent = data.nome || "Aplicativo DAI";
+        versao.textContent =
+          (data.versao ? "Versão: " + data.versao + " · " : "") +
+          "Origem: " + url.hostname;
+
+        botao.href = url.href;
+        botao.hidden = false;
+      } catch (erro) {
+        console.error("Erro ao carregar download:", erro);
+        nome.textContent = "Download indisponível neste momento.";
+      }
+    }
+
+    carregarDownload();
+  </script>
+</body>
+</html>
