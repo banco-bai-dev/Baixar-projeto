@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAI — Administração</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f3;
+      color: #23343d;
+      margin: 0;
+      padding: 24px;
+    }
+    main { max-width: 720px; margin: auto; }
+    h1, h2 { color: #102e4a; }
+    section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #d8e0dc;
+      border-radius: 8px;
+    }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin: 6px 0;
+    }
+    button {
+      background: #102e4a;
+      color: white;
+      border: 0;
+      border-radius: 5px;
+      padding: 10px 16px;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+    .pedido {
+      border-top: 1px solid #ddd;
+      padding: 12px 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Painel DAI</h1>
+
+  <section id="login">
+    <h2>Entrada do administrador</h2>
+    <form id="form-login">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" required autocomplete="username">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" required autocomplete="current-password">
+      <button type="submit">Entrar</button>
+    </form>
+  </section>
+
+  <div id="painel" hidden>
+    <button id="sair" type="button">Sair</button>
+
+    <section>
+      <h2>Link do aplicativo</h2>
+      <form id="form-download">
+        <label for="nome">Nome</label>
+        <input id="nome" required maxlength="100">
+        <label for="versao">Versão</label>
+        <input id="versao" maxlength="50">
+        <label for="link">Link HTTPS</label>
+        <input id="link" type="url" placeholder="https://...">
+        <button type="submit">Guardar alterações</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Pedidos recebidos</h2>
+      <button id="atualizar" type="button">Atualizar lista</button>
+      <div id="pedidos"></div>
+    </section>
+  </div>
+
+  <p id="estado" role="status"></p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const cliente = supabase.createClient(
+    "https://ovoqrcaktvksvgbgsixg.supabase.co",
+    "sb_publishable_eAtoBK4izRPU-CbmYUOinA_vrIt5icH"
+  );
+
+  const login = document.getElementById("login");
+  const painel = document.getElementById("painel");
+  const estado = document.getElementById("estado");
+  const lista = document.getElementById("pedidos");
+
+  async function mostrarPainel() {
+    const { data } = await cliente.auth.getSession();
+    const ligado = !!data.session;
+    login.hidden = ligado;
+    painel.hidden = !ligado;
+    if (ligado) {
+      await carregarDownload();
+      await carregarPedidos();
+    }
+  }
+
+  document.getElementById("form-login").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    estado.textContent = "A entrar…";
+    const { error } = await cliente.auth.signInWithPassword({
+      email: document.getElementById("email").value.trim(),
+      password: document.getElementById("senha").value
+    });
+    document.getElementById("senha").value = "";
+    if (error) {
+      estado.textContent = "Não foi possível entrar. Verifique os dados.";
+      return;
+    }
+    estado.textContent = "";
+    await mostrarPainel();
+  });
+
+  document.getElementById("sair").addEventListener("click", async () => {
+    await cliente.auth.signOut();
+    lista.replaceChildren();
+    estado.textContent = "Sessão terminada.";
+    await mostrarPainel();
+  });
+
+  async function carregarDownload() {
+    const { data, error } = await cliente
+      .from("configuracao_download")
+      .select("nome, versao, link")
+      .eq("id", 1)
+      .single();
+
+    if (error) {
+      estado.textContent = "Erro ao carregar a configuração.";
+      return;
+    }
+    document.getElementById("nome").value = data.nome || "";
+    document.getElementById("versao").value = data.versao || "";
+    document.getElementById("link").value = data.link || "";
+  }
+
+  document.getElementById("form-download").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const link = document.getElementById("link").value.trim();
+
+    if (link) {
+      try {
+        if (new URL(link).protocol !== "https:") throw new Error();
+      } catch {
+        estado.textContent = "Introduza um link HTTPS válido.";
+        return;
+      }
+    }
+
+    const { data, error } = await cliente
+      .from("configuracao_download")
+      .update({
+        nome: document.getElementById("nome").value.trim(),
+        versao: document.getElementById("versao").value.trim() || null,
+        link: link || null,
+        atualizado_em: new Date().toISOString()
+      })
+      .eq("id", 1)
+      .select();
+
+    estado.textContent = error || !data || data.length === 0
+      ? "Não foi possível guardar. Verifique o acesso de administrador."
+      : "Alterações guardadas.";
+  });
+
+  async function carregarPedidos() {
+    lista.textContent = "A carregar…";
+    const { data, error } = await cliente
+      .from("pedidos")
+      .select("nome, contacto, servico, mensagem, criado_em")
+      .order("criado_em", { ascending: false });
+
+    lista.replaceChildren();
+    if (error) {
+      lista.textContent = "Não foi possível carregar os pedidos.";
+      return;
+    }
+    if (!data.length) {
+      lista.textContent = "Ainda não há pedidos.";
+      return;
+    }
+    for (const pedido of data) {
+      const item = document.createElement("div");
+      item.className = "pedido";
+      item.textContent =
+        "Nome: " + pedido.nome +
+        "\nContacto: " + pedido.contacto +
+        "\nServiço: " + pedido.servico +
+        "\nMensagem: " + (pedido.mensagem || "—") +
+        "\nData: " + new Date(pedido.criado_em).toLocaleString("pt");
+      lista.appendChild(item);
+    }
+  }
+
+  document.getElementById("atualizar").addEventListener("click", carregarPedidos);
+  mostrarPainel();
+</script>
+</body>
+</html>
